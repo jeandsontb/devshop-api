@@ -5,7 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CategoryModule } from './category/category.module';
+import { CategoryModule } from './modules/category/category.module';
 // import { Category } from './category/entity/category.entity';
 
 @Module({
