@@ -16,9 +16,13 @@ export class CategorySlugIsUnique implements ValidatorConstraintInterface {
     text: string,
     validationArguments: ValidationArguments,
   ): Promise<boolean> {
+    const idUpdated = validationArguments.object['id'];
     const category = await this.categoryService.findBySlug(text);
 
     if (category) {
+      if (idUpdated && idUpdated === category.id) {
+        return true;
+      }
       return false;
     }
     return true;
