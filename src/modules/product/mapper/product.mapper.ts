@@ -33,15 +33,13 @@ export class ProductMapper {
   }
 
   public static fromEntityToPublic(entity: Product): ProductPublic {
+    console.log('product ', entity, entity.category);
     const product = new ProductPublic();
     product.id = entity.id;
     product.name = entity.name;
     product.slug = entity.slug;
     product.description = entity.description;
-
-    if (product.category) {
-      product.category = entity.category.id;
-    }
+    product.category = entity.category.toString();
 
     return product;
   }
