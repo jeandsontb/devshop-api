@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { BrandModule } from './modules/brand/brand.module';
 import { CategoryModule } from './modules/category/category.module';
 import { ProductModule } from './modules/product/product.module';
 // import { Category } from './category/entity/category.entity';
@@ -31,6 +32,7 @@ import { ProductModule } from './modules/product/product.module';
 
     CategoryModule,
     ProductModule,
+    BrandModule,
   ],
   controllers: [AppController],
   providers: [AppService],
