@@ -41,6 +41,7 @@ type Mutation {
   createProduct(input: ProductCreateInput!): Product!
   updateProduct(input: ProductUpdateInput!): Product!
   deleteProduct(id: String!): Boolean!
+  uploadBrandLogo(input: String!): Brand!
   brandCreateInput(input: BrandCreateInput!): Brand!
   updateBrand(input: BrandUpdateInput!): Brand!
   deleteBrand(id: String!): Boolean!

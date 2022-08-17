@@ -24,6 +24,11 @@ export class BrandResolver {
     return this.brandService.findBySlug(slug);
   }
 
+  @Mutation((returns) => BrandPublic, { name: 'uploadBrandLogo' })
+  async uploadLogo(@Args('input') input: string): Promise<BrandPublic> {
+    return this.brandService.uploadLogo(input);
+  }
+
   @Mutation((returns) => BrandPublic, { name: 'brandCreateInput' })
   async createBrand(
     @Args('input') input: BrandCreateInput,
