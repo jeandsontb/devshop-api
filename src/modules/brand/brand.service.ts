@@ -46,15 +46,20 @@ export class BrandService {
     }
   }
 
-  async uploadLogo(input: string): Promise<Brand> {
-    const stream = fs.createReadStream('./foto.jpeg');
+  async uploadLogo(
+    id: string,
+    createReadStream: () => any,
+    filename: string,
+    mimetype: string,
+  ): Promise<Brand> {
+    const stream = createReadStream();
 
     const dataFile = {
-      filename: 'foto.jpeg',
+      filename,
       stream,
-      mimetype: 'image/jpeg',
+      mimetype,
       bucket: 'devshop-project',
-      destinationFileName: 'foto.jpeg',
+      destinationFileName: id + '-' + filename,
     };
 
     await this.s3.upload(dataFile);
