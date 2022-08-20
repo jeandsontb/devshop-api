@@ -25,20 +25,22 @@ export class BrandResolver {
     return this.brandService.findBySlug(slug);
   }
 
-  @Mutation((returns) => BrandPublic, { name: 'uploadBrandLogo' })
+  @Mutation((returns) => Boolean, { name: 'uploadBrandLogo' })
   async uploadLogo(
     @Args('id') id: string,
     @Args('file', { type: () => GraphQLUpload })
     file: FileUpload,
-  ): Promise<BrandPublic> {
+  ): Promise<boolean> {
     const { createReadStream, filename, mimetype } = await file;
 
-    return this.brandService.uploadLogo(
+    await this.brandService.uploadLogo(
       id,
       createReadStream,
       filename,
       mimetype,
     );
+
+    return true;
   }
 
   @Mutation((returns) => BrandPublic, { name: 'brandCreateInput' })
