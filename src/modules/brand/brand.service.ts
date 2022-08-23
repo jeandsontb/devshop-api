@@ -39,6 +39,16 @@ export class BrandService {
 
   async delete(id: string): Promise<boolean> {
     try {
+      const brand = await this.brandRepository.findOne({ where: { id } });
+      if (!brand) {
+        return false;
+      }
+
+      if (brand && brand.logo) {
+        const filename = brand.logo.split('.com/')[1];
+        await this.s3.deleteObject('devshop-project', filename);
+      }
+
       await this.brandRepository.delete(id);
       return true;
     } catch (err) {
@@ -52,6 +62,16 @@ export class BrandService {
     filename: string,
     mimetype: string,
   ): Promise<boolean> {
+    const brand = await this.brandRepository.findOne({ where: { id } });
+    if (!brand) {
+      return false;
+    }
+
+    if (brand && brand.logo) {
+      const filename = brand.logo.split('.com/')[1];
+      await this.s3.deleteObject('devshop-project', filename);
+    }
+
     const stream = createReadStream().pipe(sharp().resize(300));
 
     const dataFile = {
@@ -64,6 +84,17 @@ export class BrandService {
     const url = await this.s3.upload(dataFile);
     await this.brandRepository.update(id, {
       logo: url,
+    });
+    return true;
+  }
+
+  async removeBrandLogo(id: string): Promise<boolean> {
+    const brand = await this.brandRepository.findOne({ where: { id } });
+
+    const filename = brand.logo.split('.com/')[1];
+    await this.s3.deleteObject('devshop-project', filename);
+    await this.brandRepository.update(brand.id, {
+      logo: null,
     });
     return true;
   }

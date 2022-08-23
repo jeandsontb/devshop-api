@@ -14,10 +14,10 @@ export class S3 {
   constructor() {
     aws.config.update({
       region: 'us-east-1',
-      credentials: {
-        accessKeyId: 'AKIAYXQN2LNFQIJZKCPT',
-        secretAccessKey: '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',
-      },
+      // credentials: {
+      // accessKeyId: '',
+      // secretAccessKey: '',
+      // },
     });
   }
 
@@ -39,5 +39,23 @@ export class S3 {
     const { Location } = await s3.upload(s3Params).promise();
 
     return Location;
+  }
+
+  async deleteObject(
+    bucket: string,
+    destinationFileName: string,
+  ): Promise<boolean> {
+    const s3 = new aws.S3();
+    const s3Params = {
+      Bucket: bucket,
+      Key: destinationFileName,
+    };
+
+    try {
+      await s3.deleteObject(s3Params).promise();
+      return true;
+    } catch (err) {
+      return false;
+    }
   }
 }

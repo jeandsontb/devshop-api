@@ -41,6 +41,11 @@ export class BrandResolver {
     );
   }
 
+  @Mutation((returns) => Boolean, { name: 'removeBrandLogo' })
+  async removeLogo(@Args('id') id: string): Promise<boolean> {
+    return await this.brandService.removeBrandLogo(id);
+  }
+
   @Mutation((returns) => BrandPublic, { name: 'brandCreateInput' })
   async createBrand(
     @Args('input') input: BrandCreateInput,
