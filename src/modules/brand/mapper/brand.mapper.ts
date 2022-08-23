@@ -1,3 +1,4 @@
+import { BrandPublic } from '../dto/brand';
 import { BrandCreateInput } from '../dto/brand-create.input';
 import { Brand } from '../entity/brand.entity';
 
@@ -7,5 +8,12 @@ export class BrandMapper {
     brandEntity.name = input.name;
     brandEntity.slug = input.slug;
     return brandEntity;
+  }
+  public static fromEntityToPublic(entity: Brand): BrandPublic {
+    const brandPublic = new BrandPublic();
+    brandPublic.id = entity.id;
+    brandPublic.name = entity.name;
+    brandPublic.slug = entity.slug;
+    return brandPublic;
   }
 }

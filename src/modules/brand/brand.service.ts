@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { S3 } from 'src/utils/s3';
 import { Repository } from 'typeorm';
 import { Brand } from './entity/brand.entity';
+import * as sharp from 'sharp';
 
 @Injectable()
 export class BrandService {
@@ -50,18 +51,20 @@ export class BrandService {
     createReadStream: () => any,
     filename: string,
     mimetype: string,
-  ): Promise<void> {
-    const stream = createReadStream();
+  ): Promise<boolean> {
+    const stream = createReadStream().pipe(sharp().resize(300));
 
     const dataFile = {
-      filename,
       stream,
       mimetype,
       bucket: 'devshop-project',
       destinationFileName: id + '-' + filename,
     };
 
-    await this.s3.upload(dataFile);
-    return null;
+    const url = await this.s3.upload(dataFile);
+    await this.brandRepository.update(id, {
+      logo: url,
+    });
+    return true;
   }
 }

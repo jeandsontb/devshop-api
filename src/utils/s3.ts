@@ -2,8 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as aws from 'aws-sdk';
 
 interface IUploadDTO {
-  filename: string;
-  stream: any;
+  stream: NodeJS.ReadStream;
   bucket: string;
   destinationFileName: string;
   mimetype: string;
@@ -23,13 +22,11 @@ export class S3 {
   }
 
   async upload({
-    filename,
     stream,
     mimetype,
     bucket,
     destinationFileName,
   }: IUploadDTO): Promise<string> {
-    console.log(filename);
     const s3 = new aws.S3();
     const s3Params = {
       Bucket: bucket,
@@ -40,7 +37,6 @@ export class S3 {
     };
 
     const { Location } = await s3.upload(s3Params).promise();
-    console.log(Location);
 
     return Location;
   }
