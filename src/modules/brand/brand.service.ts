@@ -93,6 +93,7 @@ export class BrandService {
 
     const filename = brand.logo.split('.com/')[1];
     await this.s3.deleteObject('devshop-project', filename);
+
     await this.brandRepository.update(brand.id, {
       logo: null,
     });

@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { BrandModule } from './modules/brand/brand.module';
 import { CategoryModule } from './modules/category/category.module';
 import { ProductModule } from './modules/product/product.module';
+import { UserModule } from './modules/user/user.module';
 // import { Category } from './category/entity/category.entity';
 
 @Module({
@@ -33,6 +34,7 @@ import { ProductModule } from './modules/product/product.module';
     CategoryModule,
     ProductModule,
     BrandModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
