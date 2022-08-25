@@ -20,5 +20,9 @@ export class UserUpdateInput {
 
   @Field()
   @Length(3)
+  password: string;
+
+  @Field()
+  @Length(3)
   role: string;
 }
