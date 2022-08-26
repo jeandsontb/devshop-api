@@ -23,6 +23,11 @@ type Product {
   category: String
 }
 
+type AuthToken {
+  refreshToken: String!
+  accessToken: String!
+}
+
 type User {
   id: String
   name: String
@@ -60,6 +65,7 @@ type Mutation {
   UserCreateInput(input: UserCreateInput!): User!
   updateUser(input: UserUpdateInput!): User!
   deleteUser(id: String!): Boolean!
+  auth(input: AuthUserInput!): AuthToken!
 }
 
 input CategoryCreateInput {
@@ -115,4 +121,9 @@ input UserUpdateInput {
   email: String!
   password: String!
   role: String!
+}
+
+input AuthUserInput {
+  email: String!
+  password: String!
 }

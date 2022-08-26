@@ -1,4 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { JwtService } from '@nestjs/jwt';
+import { AuthToken } from './dto/auth';
+import { AuthUserInput } from './dto/auth-user.input';
 import { UserPublic } from './dto/user';
 import { UserCreateInput } from './dto/user-create.input';
 import { UserUpdateInput } from './dto/user-update.input';
@@ -7,7 +10,10 @@ import { UserService } from './user.service';
 
 @Resolver((of) => UserPublic)
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   @Query((returns) => [UserPublic], { name: 'getAllUsers' })
   async getAllUsers(): Promise<UserPublic[]> {
@@ -37,5 +43,26 @@ export class UserResolver {
   @Mutation((returns) => Boolean, { name: 'deleteUser' })
   async deleteUser(@Args('id') input: string): Promise<boolean> {
     return this.userService.delete(input);
+  }
+
+  @Mutation((returns) => AuthToken, { name: 'auth' })
+  async auth(@Args('input') input: AuthUserInput): Promise<AuthToken> {
+    const user = await this.userService.auth(input.email, input.password);
+    if (user) {
+      const authToken = new AuthToken();
+      authToken.refreshToken = this.jwtService.sign({
+        scope: ['refreshToken'],
+        id: user.id,
+      });
+
+      authToken.accessToken = this.jwtService.sign({
+        scope: ['accessToken', user.role],
+        id: user.id,
+      });
+
+      return authToken;
+    }
+
+    return null;
   }
 }

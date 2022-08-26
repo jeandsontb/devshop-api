@@ -51,4 +51,8 @@ export class User {
   setUpdatedDate(): void {
     this.updatedAt = new Date();
   }
+
+  async checkPassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
+  }
 }
