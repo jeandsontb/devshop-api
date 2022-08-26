@@ -1,5 +1,8 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
+import { AuthGuard } from 'src/utils/jwt-auth.guard';
+import { AuthUserId } from 'src/utils/jwt-user.decorator';
 import { AuthToken } from './dto/auth';
 import { AuthUserInput } from './dto/auth-user.input';
 import { UserPublic } from './dto/user';
@@ -99,5 +102,11 @@ export class UserResolver {
     }
 
     return null;
+  }
+
+  @UseGuards(AuthGuard)
+  @Query((returns) => UserPublic, { name: 'getMe' })
+  async getMe(@AuthUserId() id: string): Promise<UserPublic> {
+    return this.userService.findById(id);
   }
 }
