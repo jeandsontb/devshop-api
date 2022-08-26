@@ -47,18 +47,31 @@ export class UserResolver {
 
   @Mutation((returns) => AuthToken, { name: 'auth' })
   async auth(@Args('input') input: AuthUserInput): Promise<AuthToken> {
-    const user = await this.userService.auth(input.email, input.password);
+    const [user, refreshToken] = await this.userService.auth(
+      input.email,
+      input.password,
+    );
     if (user) {
       const authToken = new AuthToken();
-      authToken.refreshToken = this.jwtService.sign({
-        scope: ['refreshToken'],
-        id: user.id,
-      });
+      authToken.refreshToken = this.jwtService.sign(
+        {
+          scope: ['refreshToken'],
+          id: refreshToken.id,
+        },
+        {
+          expiresIn: '8 hours',
+        },
+      );
 
-      authToken.accessToken = this.jwtService.sign({
-        scope: ['accessToken', user.role],
-        id: user.id,
-      });
+      authToken.accessToken = this.jwtService.sign(
+        {
+          scope: ['accessToken', user.role],
+          id: user.id,
+        },
+        {
+          expiresIn: '1 hour',
+        },
+      );
 
       return authToken;
     }

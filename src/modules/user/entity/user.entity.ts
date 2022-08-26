@@ -3,9 +3,11 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { AuthToken } from './authtoken.entity';
 
 @Entity()
 export class User {
@@ -32,6 +34,9 @@ export class User {
 
   @Column({ type: 'timestamp' })
   updatedAt: Date;
+
+  @OneToMany(() => AuthToken, (authToken) => authToken.user)
+  authTokens: AuthToken[];
 
   @BeforeInsert()
   @BeforeUpdate()
