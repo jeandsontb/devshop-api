@@ -79,7 +79,7 @@ export class UserResolver {
       return authToken;
     }
 
-    return null;
+    throw new Error('Bad credentials');
   }
 
   @Mutation((returns) => String, { name: 'accessToken' })

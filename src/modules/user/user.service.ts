@@ -63,7 +63,7 @@ export class UserService {
       return [user, token];
     }
 
-    return null;
+    return [null, null];
   }
 
   async getRefreshToken(id: string): Promise<AuthToken> {
