@@ -12,7 +12,6 @@ import { AuthGuard } from '../../utils/jwt-auth.guard';
 export class BrandResolver {
   constructor(private readonly brandService: BrandService) {}
 
-  @UseGuards(AuthGuard)
   @Query((returns) => [BrandPublic], { name: 'getAllBrands' })
   async getAllBrands(): Promise<BrandPublic[]> {
     return this.brandService.findAll();
@@ -28,6 +27,7 @@ export class BrandResolver {
     return this.brandService.findBySlug(slug);
   }
 
+  @UseGuards(AuthGuard)
   @Mutation((returns) => Boolean, { name: 'uploadBrandLogo' })
   async uploadLogo(
     @Args('id') id: string,
@@ -44,11 +44,13 @@ export class BrandResolver {
     );
   }
 
+  @UseGuards(AuthGuard)
   @Mutation((returns) => Boolean, { name: 'removeBrandLogo' })
   async removeLogo(@Args('id') id: string): Promise<boolean> {
     return await this.brandService.removeBrandLogo(id);
   }
 
+  @UseGuards(AuthGuard)
   @Mutation((returns) => BrandPublic, { name: 'brandCreateInput' })
   async createBrand(
     @Args('input') input: BrandCreateInput,
@@ -56,15 +58,17 @@ export class BrandResolver {
     return this.brandService.create(BrandMapper.toEntity(input));
   }
 
+  @UseGuards(AuthGuard)
   @Mutation((returns) => BrandPublic, { name: 'updateBrand' })
   async updateBrand(
     @Args('input') input: BrandUpdateInput,
   ): Promise<BrandPublic> {
     return BrandMapper.fromEntityToPublic(
-      await this.brandService.update(BrandMapper.toEntity(input)),
+      await this.brandService.update(BrandMapper.fromUpdateToEntity(input)),
     );
   }
 
+  @UseGuards(AuthGuard)
   @Mutation((returns) => Boolean, { name: 'deleteBrand' })
   async deleteBrand(@Args('id') input: string): Promise<boolean> {
     return this.brandService.delete(input);

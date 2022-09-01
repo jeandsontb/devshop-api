@@ -18,11 +18,13 @@ export class UserResolver {
     private readonly jwtService: JwtService,
   ) {}
 
+  @UseGuards(AuthGuard)
   @Query((returns) => [UserPublic], { name: 'getAllUsers' })
   async getAllUsers(): Promise<UserPublic[]> {
     return this.userService.findAll();
   }
 
+  @UseGuards(AuthGuard)
   @Query((returns) => UserPublic, { name: 'getUserById' })
   async getUserById(@Args('id') id: string): Promise<UserPublic> {
     return this.userService.findById(id);
@@ -33,16 +35,19 @@ export class UserResolver {
     return this.userService.findByEmail(email);
   }
 
+  @UseGuards(AuthGuard)
   @Mutation((returns) => UserPublic, { name: 'UserCreateInput' })
   async createUser(@Args('input') input: UserCreateInput): Promise<UserPublic> {
     return this.userService.create(UserMapper.toEntity(input));
   }
 
+  @UseGuards(AuthGuard)
   @Mutation((returns) => UserPublic, { name: 'updateUser' })
   async updateUser(@Args('input') input: UserUpdateInput): Promise<UserPublic> {
     return this.userService.update(UserMapper.toUpdateEntity(input));
   }
 
+  @UseGuards(AuthGuard)
   @Mutation((returns) => Boolean, { name: 'deleteUser' })
   async deleteUser(@Args('id') input: string): Promise<boolean> {
     return this.userService.delete(input);

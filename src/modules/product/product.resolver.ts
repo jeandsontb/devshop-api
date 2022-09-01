@@ -4,6 +4,8 @@ import { ProductCreateInput } from './dto/product-create.input';
 import { ProductService } from './product.service';
 import { ProductMapper } from './mapper/product.mapper';
 import { ProductUpdateInput } from './dto/product-update.input';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/utils/jwt-auth.guard';
 
 @Resolver((of) => ProductPublic)
 export class ProductResolver {
@@ -29,6 +31,7 @@ export class ProductResolver {
     );
   }
 
+  @UseGuards(AuthGuard)
   @Mutation((returns) => ProductPublic, { name: 'createProduct' })
   async createProduct(
     @Args('input') input: ProductCreateInput,
@@ -38,6 +41,7 @@ export class ProductResolver {
     );
   }
 
+  @UseGuards(AuthGuard)
   @Mutation((returns) => ProductPublic, { name: 'updateProduct' })
   async updateProduct(
     @Args('input') input: ProductUpdateInput,
@@ -47,6 +51,7 @@ export class ProductResolver {
     );
   }
 
+  @UseGuards(AuthGuard)
   @Mutation((returns) => Boolean, { name: 'deleteProduct' })
   async deleteProduct(@Args('id') id: string): Promise<boolean> {
     return this.productService.delete(id);
