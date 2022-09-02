@@ -15,6 +15,28 @@ export class ProductMapper {
     category.id = input.category;
     entityProduct.category = category;
 
+    entityProduct.sku = input.sku;
+    entityProduct.price = input.price;
+    entityProduct.weight = input.weight;
+
+    entityProduct.optionsNames = input.optionsNames;
+    entityProduct.variations = [
+      {
+        optionName1: 'Vermelho',
+        optionName2: 'V',
+        sku: 'a',
+        price: 10,
+        weight: 0.5,
+      },
+      {
+        optionName1: 'Azul',
+        optionName2: 'A',
+        sku: 'a',
+        price: 10,
+        weight: 0.5,
+      },
+    ];
+
     return entityProduct;
   }
 
