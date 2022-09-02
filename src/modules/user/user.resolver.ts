@@ -76,6 +76,12 @@ export class UserResolver {
     return this.userService.delete(id);
   }
 
+  @UseGuards(AuthGuard)
+  @Mutation((returns) => Boolean, { name: 'invalidateUserSession' })
+  async invalidateUserSession(@Args('id') id: string): Promise<boolean> {
+    return this.userService.invalidateRefreshToken(id);
+  }
+
   @Mutation((returns) => AuthToken, { name: 'auth' })
   async auth(
     @Context() context: GraphQLExecutionContext,

@@ -32,6 +32,7 @@ type AuthSession {
   id: String!
   userAgent: String
   lastUsedAt: DateTime
+  active: Boolean
 }
 
 """
@@ -79,6 +80,7 @@ type Mutation {
   updateUser(input: UserUpdateInput!): User!
   changePasswordUser(input: UserPasswordUpdateInput!): Boolean!
   deleteUser(id: String!): Boolean!
+  invalidateUserSession(id: String!): Boolean!
   auth(input: AuthUserInput!): AuthToken!
   accessToken(refreshToken: String!): String!
 }

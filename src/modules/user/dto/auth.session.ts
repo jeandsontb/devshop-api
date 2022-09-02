@@ -10,4 +10,7 @@ export class AuthSession {
 
   @Field({ nullable: true })
   lastUsedAt: Date;
+
+  @Field({ nullable: true })
+  active: boolean;
 }

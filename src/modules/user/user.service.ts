@@ -87,11 +87,21 @@ export class UserService {
   }
 
   async getRefreshToken(id: string): Promise<AuthToken> {
-    const refreshToken = await this.authTokenRepository.findOne(id, {
-      relations: ['user'],
-    });
+    const refreshToken = await this.authTokenRepository.findOne(
+      { id, active: true },
+      {
+        relations: ['user'],
+      },
+    );
     refreshToken.lastUsedAt = new Date();
     await this.authTokenRepository.save(refreshToken);
     return refreshToken;
+  }
+
+  async invalidateRefreshToken(id: string): Promise<boolean> {
+    const refreshToken = await this.authTokenRepository.findOne(id);
+    refreshToken.active = false;
+    await this.authTokenRepository.save(refreshToken);
+    return true;
   }
 }
