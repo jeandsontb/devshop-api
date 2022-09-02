@@ -49,8 +49,8 @@ export class UserResolver {
 
   @UseGuards(AuthGuard)
   @Mutation((returns) => Boolean, { name: 'deleteUser' })
-  async deleteUser(@Args('id') input: string): Promise<boolean> {
-    return this.userService.delete(input);
+  async deleteUser(@Args('id') id: string): Promise<boolean> {
+    return this.userService.delete(id);
   }
 
   @Mutation((returns) => AuthToken, { name: 'auth' })

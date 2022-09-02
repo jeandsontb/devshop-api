@@ -36,7 +36,6 @@ export class UserService {
 
     entity.name = input.name;
     entity.email = input.email;
-    entity.password = input.password;
     entity.role = input.role;
 
     await this.userRepository.save(entity);

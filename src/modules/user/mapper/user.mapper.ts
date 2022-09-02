@@ -17,7 +17,6 @@ export class UserMapper {
     userEntity.id = input.id;
     userEntity.name = input.name;
     userEntity.email = input.email;
-    userEntity.password = input.password;
     userEntity.role = input.role;
     return userEntity;
   }
