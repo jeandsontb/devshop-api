@@ -42,6 +42,16 @@ export class UserService {
     return input;
   }
 
+  async changePassword(id: string, newPassword: string): Promise<boolean> {
+    const entity = await this.userRepository.findOne({
+      where: { id },
+    });
+
+    entity.password = newPassword;
+    await this.userRepository.save(entity);
+    return true;
+  }
+
   async delete(id: string): Promise<boolean> {
     try {
       await this.userRepository.delete(id);

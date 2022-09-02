@@ -7,6 +7,7 @@ import { AuthToken } from './dto/auth';
 import { AuthUserInput } from './dto/auth-user.input';
 import { UserPublic } from './dto/user';
 import { UserCreateInput } from './dto/user-create.input';
+import { UserPasswordUpdateInput } from './dto/user-pass-update.input';
 import { UserUpdateInput } from './dto/user-update.input';
 import { UserMapper } from './mapper/user.mapper';
 import { UserService } from './user.service';
@@ -45,6 +46,14 @@ export class UserResolver {
   @Mutation((returns) => UserPublic, { name: 'updateUser' })
   async updateUser(@Args('input') input: UserUpdateInput): Promise<UserPublic> {
     return this.userService.update(UserMapper.toUpdateEntity(input));
+  }
+
+  @UseGuards(AuthGuard)
+  @Mutation((returns) => Boolean, { name: 'changePasswordUser' })
+  async changePasswordUser(
+    @Args('input') input: UserPasswordUpdateInput,
+  ): Promise<boolean> {
+    return this.userService.changePassword(input.id, input.password);
   }
 
   @UseGuards(AuthGuard)
