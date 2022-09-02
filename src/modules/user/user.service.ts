@@ -17,6 +17,12 @@ export class UserService {
     return this.userRepository.find({ order: { id: 'DESC' } });
   }
 
+  async findAllUserSessions(id: string): Promise<AuthToken[]> {
+    return this.authTokenRepository.find({
+      where: [{ user: id }],
+    });
+  }
+
   async findById(id: string): Promise<User> {
     return this.userRepository.findOne({ where: { id } });
   }
@@ -61,13 +67,18 @@ export class UserService {
     }
   }
 
-  async auth(email: string, password: string): Promise<[User, AuthToken]> {
+  async auth(
+    email: string,
+    password: string,
+    userAgent: string,
+  ): Promise<[User, AuthToken]> {
     const user = await this.userRepository.findOne({
       where: { email },
     });
     if (user && (await user.checkPassword(password))) {
       const authToken = new AuthToken();
       authToken.user = user;
+      authToken.userAgent = userAgent;
       const token = await this.authTokenRepository.save(authToken);
       return [user, token];
     }
@@ -76,8 +87,11 @@ export class UserService {
   }
 
   async getRefreshToken(id: string): Promise<AuthToken> {
-    return this.authTokenRepository.findOne(id, {
+    const refreshToken = await this.authTokenRepository.findOne(id, {
       relations: ['user'],
     });
+    refreshToken.lastUsedAt = new Date();
+    await this.authTokenRepository.save(refreshToken);
+    return refreshToken;
   }
 }

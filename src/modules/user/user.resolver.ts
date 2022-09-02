@@ -1,10 +1,18 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Context,
+  GraphQLExecutionContext,
+  Mutation,
+  Query,
+  Resolver,
+} from '@nestjs/graphql';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from 'src/utils/jwt-auth.guard';
 import { AuthUserId } from 'src/utils/jwt-user.decorator';
 import { AuthToken } from './dto/auth';
 import { AuthUserInput } from './dto/auth-user.input';
+import { AuthSession } from './dto/auth.session';
 import { UserPublic } from './dto/user';
 import { UserCreateInput } from './dto/user-create.input';
 import { UserPasswordUpdateInput } from './dto/user-pass-update.input';
@@ -23,6 +31,12 @@ export class UserResolver {
   @Query((returns) => [UserPublic], { name: 'getAllUsers' })
   async getAllUsers(): Promise<UserPublic[]> {
     return this.userService.findAll();
+  }
+
+  @UseGuards(AuthGuard)
+  @Query((returns) => [AuthSession], { name: 'getAllUsersSessions' })
+  async getAllUsersSessions(@Args('id') id: string): Promise<AuthSession[]> {
+    return this.userService.findAllUserSessions(id);
   }
 
   @UseGuards(AuthGuard)
@@ -63,10 +77,14 @@ export class UserResolver {
   }
 
   @Mutation((returns) => AuthToken, { name: 'auth' })
-  async auth(@Args('input') input: AuthUserInput): Promise<AuthToken> {
+  async auth(
+    @Context() context: GraphQLExecutionContext,
+    @Args('input') input: AuthUserInput,
+  ): Promise<AuthToken> {
     const [user, refreshToken] = await this.userService.auth(
       input.email,
       input.password,
+      context['req']['headers']['user-agent'],
     );
     if (user) {
       const authToken = new AuthToken();

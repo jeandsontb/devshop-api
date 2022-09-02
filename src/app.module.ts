@@ -29,6 +29,7 @@ import { UserModule } from './modules/user/user.module';
 
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      context: ({ req, res }) => ({ req, res }),
       autoSchemaFile: 'schema.gql',
     }),
 

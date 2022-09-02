@@ -28,6 +28,17 @@ type AuthToken {
   accessToken: String!
 }
 
+type AuthSession {
+  id: String!
+  userAgent: String
+  lastUsedAt: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type User {
   id: String
   name: String
@@ -46,6 +57,7 @@ type Query {
   getBrandById(id: String!): Brand!
   getBrandBySlug(slug: String!): Brand!
   getAllUsers: [User!]!
+  getAllUsersSessions(id: String!): [AuthSession!]!
   getUserById(id: String!): User!
   getUserByEmail(email: String!): User!
   getMe: User!
