@@ -21,6 +21,7 @@ type Product {
   slug: String
   description: String
   category: String
+  images: [String!]
 }
 
 type AuthToken {
@@ -71,6 +72,8 @@ type Mutation {
   createProduct(input: ProductCreateInput!): Product!
   updateProduct(input: ProductUpdateInput!): Product!
   deleteProduct(id: String!): Boolean!
+  uploadProductImage(id: String!, file: Upload!): Boolean!
+  deleteProductImage(id: String!, url: String!): Boolean!
   uploadBrandLogo(id: String!, file: Upload!): Boolean!
   removeBrandLogo(id: String!): Boolean!
   brandCreateInput(input: BrandCreateInput!): Brand!

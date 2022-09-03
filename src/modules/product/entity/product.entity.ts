@@ -41,4 +41,7 @@ export class Product {
 
   @Column({ nullable: true, type: 'decimal' })
   weight: number;
+
+  @Column({ type: 'jsonb', nullable: true })
+  images: string[];
 }

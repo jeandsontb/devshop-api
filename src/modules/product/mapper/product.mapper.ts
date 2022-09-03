@@ -46,6 +46,7 @@ export class ProductMapper {
     product.slug = entity.slug;
     product.description = entity.description;
     product.category = entity.category.toString();
+    product.images = entity.images;
 
     return product;
   }
