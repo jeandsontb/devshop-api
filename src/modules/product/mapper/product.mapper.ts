@@ -18,6 +18,7 @@ export class ProductMapper {
     entityProduct.sku = input.sku;
     entityProduct.price = input.price;
     entityProduct.weight = input.weight;
+    entityProduct.stock = input.stock;
 
     entityProduct.optionsNames = input.optionsNames;
     entityProduct.variations = input.variations;

@@ -7,6 +7,7 @@ interface ProductVariation {
   sku: string;
   price: number;
   weight: number;
+  stock: number;
 }
 
 @Entity()
@@ -22,6 +23,9 @@ export class Product {
 
   @Column({ length: 250, nullable: false })
   slug: string;
+
+  @Column({ nullable: true, type: 'integer' })
+  stock: number;
 
   // Product N -> 1 Category
   @ManyToOne((type) => Category, (category) => category.id)

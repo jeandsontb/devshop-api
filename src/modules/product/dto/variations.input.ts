@@ -1,4 +1,4 @@
-import { Field, InputType, Float } from '@nestjs/graphql';
+import { Field, InputType, Float, Int } from '@nestjs/graphql';
 
 @InputType()
 export class VariationInput {
@@ -16,4 +16,7 @@ export class VariationInput {
 
   @Field((type) => Float)
   weight: number;
+
+  @Field((type) => Int)
+  stock: number;
 }

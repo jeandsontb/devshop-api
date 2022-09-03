@@ -79,7 +79,6 @@ export class ProductService {
     };
 
     const url = await this.s3.upload(dataFile);
-
     product.images.push(url);
 
     await this.productRepository.update(id, {
@@ -103,10 +102,7 @@ export class ProductService {
 
     await this.s3.deleteObject('devshop-project', filename);
 
-    console.log(url, filename);
-
     product.images.push(url);
-
     product.images = product.images.filter((image) => image !== url);
 
     await this.productRepository.update(id, {
