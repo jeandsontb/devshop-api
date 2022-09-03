@@ -105,6 +105,15 @@ input ProductCreateInput {
   price: Float
   weight: Float
   optionsNames: [String!]
+  variations: [VariationInput!]
+}
+
+input VariationInput {
+  optionName1: String!
+  optionName2: String!
+  sku: String!
+  price: Float!
+  weight: Float!
 }
 
 input ProductUpdateInput {
