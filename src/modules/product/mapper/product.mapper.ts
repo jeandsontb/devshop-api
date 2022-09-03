@@ -20,22 +20,7 @@ export class ProductMapper {
     entityProduct.weight = input.weight;
 
     entityProduct.optionsNames = input.optionsNames;
-    entityProduct.variations = [
-      {
-        optionName1: 'Vermelho',
-        optionName2: 'V',
-        sku: 'a',
-        price: 10,
-        weight: 0.5,
-      },
-      {
-        optionName1: 'Azul',
-        optionName2: 'A',
-        sku: 'a',
-        price: 10,
-        weight: 0.5,
-      },
-    ];
+    entityProduct.variations = input.variations;
 
     return entityProduct;
   }
