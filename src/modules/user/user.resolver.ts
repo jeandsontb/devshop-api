@@ -50,7 +50,7 @@ export class UserResolver {
     return this.userService.findByEmail(email);
   }
 
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Mutation((returns) => UserPublic, { name: 'UserCreateInput' })
   async createUser(@Args('input') input: UserCreateInput): Promise<UserPublic> {
     return this.userService.create(UserMapper.toEntity(input));
